@@ -1,0 +1,49 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/', function () {
+    return view('home'); 
+});
+
+
+Route::get('/dashboard', function () {
+    $role = Auth::user()->role;
+    return redirect()->route($role . '.dashboard');
+})->middleware('auth')->name('dashboard');
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
+Route::get('/doctor/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard')->middleware('auth');
+Route::get('/patient/dashboard', [PatientController::class, 'dashboard'])->name('patient.dashboard')->middleware('auth');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/appointment/create', [\App\Http\Controllers\AppointmentController::class, 'create'])->name('appointment.create');
+    Route::post('/appointment/store', [\App\Http\Controllers\AppointmentController::class, 'store'])->name('appointment.store');
+    Route::get('/appointments', [\App\Http\Controllers\AppointmentController::class, 'index'])->name('appointments.index');
+
+    Route::get('/patient/profile', [PatientController::class, 'showProfile'])->name('patient.profile')->middleware('auth');
+});
+
+Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
+    Route::resource('doctors', \App\Http\Controllers\Admin\DoctorController::class);
+    Route::resource('patients', \App\Http\Controllers\Admin\PatientController::class);
+    Route::get('dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])->name('specialty.doctors');
+
+
+
+
