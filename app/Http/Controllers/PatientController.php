@@ -9,8 +9,9 @@ class PatientController extends Controller
 {
     //
     public function dashboard() {
+        $user = auth()->user();
         $specialties = Specialty::with('doctors')->get();
-        return view('dashboard.patient', compact('specialties'));
+        return view('dashboard.patient', compact('user', 'specialties'));
     }
 
     public function showProfile(){

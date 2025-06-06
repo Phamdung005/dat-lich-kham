@@ -3,90 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng ký - Đặt lịch khám</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f8fb;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            max-width: 450px;
-            margin: 60px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        form input, form select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            line-height: 1.4;
-            background-color: #eaf0ff;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-        .back-home {
-            display: block;
-            margin-top: 15px;
-            text-align: center;
-            color: #007bff;
-            text-decoration: none;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen">
 
-<div class="container">
-    <h2>Đăng ký</h2>
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="text-xl font-bold text-blue-600">
+                <a href="{{ url('/') }}">ĐẶT LỊCH KHÁM</a>
+            </div>
+            <div>
+                <button class="text-gray-600 hover:text-gray-800 focus:outline-none md:hidden">
+                    <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                        <path d="M4 5h16M4 12h16M4 19h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <input type="text" name="name" placeholder="Tên" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Mật khẩu" required>
-        <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu" required>
+    <div class="flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Tạo tài khoản</h2>
 
-        <select name="role" required>
-            <option value="">-- Chọn vai trò --</option>
-            <option value="patient">Bệnh nhân</option>
-            <option value="doctor">Bác sĩ</option>
-        </select>
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
 
-        <button type="submit">Đăng ký</button>
-    </form>
+                <div class="mb-4">
+                    <input type="text" name="name" placeholder="Họ và tên" required
+                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50">
+                </div>
 
-    <a href="{{ url('/') }}" class="back-home">← Về trang chủ</a>
-</div>
+                <div class="mb-4">
+                    <input type="email" name="email" placeholder="Email" required
+                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50">
+                </div>
+
+                <div class="mb-4">
+                    <input type="password" name="password" placeholder="Mật khẩu" required
+                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50">
+                </div>
+
+                <div class="mb-4">
+                    <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu" required
+                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50">
+                </div>
+
+                <div class="mb-6">
+                    <input type="hidden" name="role" value="patient">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition">
+                    Đăng ký
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="{{ url('/') }}" class="text-blue-500 hover:underline text-sm">← Về trang chủ</a>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

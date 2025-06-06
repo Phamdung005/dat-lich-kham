@@ -20,11 +20,15 @@
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            font-size: 15px;
+            line-height:1.4;
+            background-color: #eaf0ff;
+            box-sizing: border-box;
         }
         button {
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             font-weight: bold;
         }
@@ -37,14 +41,15 @@
     <form method="POST" action="{{ route('appointment.store') }}">
         @csrf
         <label>Bác sĩ:</label>
-        <select name="doctor_id" required>
+        <select class="form-select" name="doctor_id" id="doctor_id" required>
             <option value="">-- Chọn bác sĩ --</option>
-                @foreach($doctors as $doctor)
-                    <option value="{{ $doctor->id }}" {{ (isset($doctorId) && $doctorId == $doctor->id) ? 'selected' : '' }}>
-                        {{ $doctor->name }} - {{ $doctor->specialty }}
-                    </option>
-                @endforeach
+            @foreach($doctors as $doctor)
+                <option value="{{ $doctor->id }}" {{ (isset($doctorId) && $doctorId == $doctor->id) ? 'selected' : '' }}>
+                    {{ $doctor->name }} - {{ $doctor->specialty->name }}
+                </option>
+            @endforeach
         </select>
+
 
         <label>Thời gian khám:</label>
         <input type="datetime-local" name="appointment_time" required>

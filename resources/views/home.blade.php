@@ -3,74 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ - Đặt lịch khám bệnh</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f8fb;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007bff;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
-        .hero {
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .hero p {
-            font-size: 18px;
-            color: #555;
-        }
-        .buttons {
-            margin-top: 30px;
-        }
-        .buttons a {
-            text-decoration: none;
-            padding: 12px 25px;
-            margin: 10px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            display: inline-block;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 2);
-        }
-        .buttons a:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #777;
-            font-size: 14px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
-<header>
-    <h2>Phòng Khám Sức Khỏe MD</h2>
-</header>
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4 shadow">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-2xl font-bold">Phòng Khám Sức Khỏe MD</h1>
+        </div>
+    </header>
 
-<div class="hero">
-    <h1>Đặt Lịch Khám Nhanh Chóng & Dễ Dàng</h1>
-    <p>Chăm sóc sức khỏe chủ động cùng đội ngũ bác sĩ hàng đầu.</p>
-    <div class="buttons">
-        <a href="{{ route('login') }}">Đăng nhập</a>
-        <a href="{{ route('register') }}">Đăng ký</a>
-    </div>
-</div>
+    <!-- Hero Section -->
+    <section class="py-20 text-center bg-white shadow-inner">
+        <div class="max-w-2xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Đặt Lịch Khám Nhanh Chóng & Dễ Dàng</h2>
+            <p class="text-lg text-gray-600 mb-8">Chăm sóc sức khỏe chủ động cùng đội ngũ bác sĩ hàng đầu.</p>
 
-<footer>
-    &copy; {{ date('Y') }} Phòng khám MD. All rights reserved.
-</footer>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-200">
+                    Đăng nhập
+                </a>
+                <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-200">
+                    Đăng ký
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-20 text-center text-gray-500 py-6 text-sm">
+        &copy; {{ date('Y') }} Phòng Khám MD. All rights reserved.
+    </footer>
 
 </body>
 </html>

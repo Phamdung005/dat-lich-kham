@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Doctor;
+use App\Models\Specialty;
 
 class UserSeeder extends Seeder
 {
@@ -13,29 +14,31 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
+            'email' => 'admin@test.com',
+            'password' => Hash::make('123456'),
             'role' => 'admin',
         ]);
 
         $doctorUser = User::create([
             'name' => 'Doctor User',
-            'email' => 'doctor@example.com',
-            'password' => Hash::make('password'),
+            'email' => 'doctor@test.com',
+            'password' => Hash::make('123456'),
             'role' => 'doctor',
         ]);
 
+        $specialty = Specialty::where('name', 'Khoa tim mạch')->first();
+
         Doctor::create([
             'name' => 'Dr. Strange',
-            'email' => 'doctor@example.com',
+            'email' => 'doctor@test.com',
             'user_id' => $doctorUser->id,
-            'specialty' => 'Cardiology',
+            'specialty_id' => $specialty->id,
         ]);
 
         User::create([
-            'name' => 'Patient User',
-            'email' => 'patient@example.com',
-            'password' => Hash::make('password'),
+            'name' => 'Patient',
+            'email' => 'patient@test.com',
+            'password' => Hash::make('123456'),
             'role' => 'patient',
         ]);
     }
