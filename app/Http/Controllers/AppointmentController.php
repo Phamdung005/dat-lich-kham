@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Doctor;
+
 
 class AppointmentController extends Controller
 {
@@ -38,6 +40,48 @@ class AppointmentController extends Controller
                     ->get();
 
     return view('appointments.index', compact('appointments'));
+    }
+
+
+    public function edit(Appointment $appointment)
+    {
+        if ($appointment->patient_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('appointments.edit', compact('appointment'));
+    }
+
+    public function update(Request $request, Appointment $appointment)
+    {
+        if ($appointment->patient_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'appointment_date' => 'required|date',
+            'appointment_time' => 'required',
+            'notes' => 'nullable|string'
+        ]);
+
+        $datetime = $request->appointment_date . ' ' . $request->appointment_time;
+
+        $appointment->update([
+            'appointment_time' => $datetime,
+            'notes' => $request->notes
+        ]);
+
+        return redirect()->route('appointments.index')->with('success', 'Cập nhật lịch hẹn thành công.');
+    }
+    
+    public function destroy(Appointment $appointment)
+    {
+        if ($appointment->patient_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $appointment->delete();
+        return redirect()->route('appointments.index')->with('success', 'Đã xoá lịch hẹn.');
     }
 
 }

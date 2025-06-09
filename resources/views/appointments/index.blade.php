@@ -4,6 +4,9 @@
 <div class="container">
     <h2>Danh sách lịch hẹn đã đặt</h2>
 
+    {{-- Nút quay lại --}}
+    <a href="{{ route('patient.dashboard') }}" class="btn btn-secondary mb-3">← Quay lại Dashboard</a>
+
     @if($appointments->isEmpty())
         <p>Bạn chưa có lịch hẹn nào.</p>
     @else
@@ -15,6 +18,8 @@
                     <th>Ngày khám</th>
                     <th>Giờ khám</th>
                     <th>Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Hành động</th> {{-- Cột mới --}}
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +39,16 @@
                         @else
                             {{ $appointment->status }}
                         @endif
+                    </td>
+                    <td>{{ $appointment->notes }}</td>
+                    <td>
+                        <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-sm btn-primary">Sửa</a>
+
+                        <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

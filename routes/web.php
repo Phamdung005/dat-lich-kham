@@ -44,6 +44,13 @@ Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
 
 Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])->name('specialty.doctors');
 
+Route::middleware(['auth', 'isPatient'])->group(function () {
+    Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
+    Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+});
+
+
 
 
 
