@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
+        <a class="navbar-brand fw-bold text-primary" href="#">ĐẶT LỊCH KHÁM</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="{{ route('patient.dashboard') }}">Trang chủ</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="{{ route('patient.profile') }}">Hồ sơ cá nhân</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="{{ route('appointments.index') }}">Lịch hẹn đã đặt</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="btn btn-outline-danger btn-sm" type="submit">Đăng xuất</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

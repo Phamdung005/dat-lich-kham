@@ -19,7 +19,7 @@
                     <th>Giờ khám</th>
                     <th>Trạng thái</th>
                     <th>Ghi chú</th>
-                    <th>Hành động</th> {{-- Cột mới --}}
+                    <th>Hành động</th> 
                 </tr>
             </thead>
             <tbody>
