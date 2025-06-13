@@ -3,62 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Đặt lịch khám</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f4f8fb;
         }
         .container {
             max-width: 500px;
-            margin: 50px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        select, input, textarea, button {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-            line-height:1.4;
-            background-color: #eaf0ff;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h2>Đặt lịch khám</h2>
+    @include('navigation.nav')
+    <div class="container bg-white p-4 rounded shadow">
+        <h2 class="mb-4 text-center">Đặt lịch khám</h2>
+        <form method="POST" action="{{ route('appointment.store') }}">
+            @csrf
+            <div class="mb-3">
+                <label for="doctor_id" class="form-label">Bác sĩ:</label>
+                <select class="form-select" name="doctor_id" id="doctor_id" required>
+                    <option value="">-- Chọn bác sĩ --</option>
+                    @foreach($doctors as $doctor)
+                        <option value="{{ $doctor->id }}" {{ (isset($doctorId) && $doctorId == $doctor->id) ? 'selected' : '' }}>
+                            {{ $doctor->name }} - {{ $doctor->specialty->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-    <form method="POST" action="{{ route('appointment.store') }}">
-        @csrf
-        <label>Bác sĩ:</label>
-        <select class="form-select" name="doctor_id" id="doctor_id" required>
-            <option value="">-- Chọn bác sĩ --</option>
-            @foreach($doctors as $doctor)
-                <option value="{{ $doctor->id }}" {{ (isset($doctorId) && $doctorId == $doctor->id) ? 'selected' : '' }}>
-                    {{ $doctor->name }} - {{ $doctor->specialty->name }}
-                </option>
-            @endforeach
-        </select>
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">Thời gian khám:</label>
+                <input type="datetime-local" class="form-control" name="appointment_time" id="appointment_time" required>
+            </div>
 
+            <div class="mb-3">
+                <label for="notes" class="form-label">Ghi chú:</label>
+                <textarea class="form-control" name="notes" id="notes" rows="3" placeholder="Triệu chứng, yêu cầu..."></textarea>
+            </div>
 
-        <label>Thời gian khám:</label>
-        <input type="datetime-local" name="appointment_time" required>
-
-        <label>Ghi chú:</label>
-        <textarea name="notes" placeholder="Triệu chứng, yêu cầu..."></textarea>
-
-        <button type="submit">Xác nhận đặt lịch</button>
-    </form>
-</div>
+            <button type="submit" class="btn btn-primary w-100">Xác nhận đặt lịch</button>
+        </form>
+    </div>
 </body>
 </html>

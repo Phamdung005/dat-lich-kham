@@ -8,7 +8,6 @@
 </head>
 <body>
     @include('navigation.nav');
-
     <div class="container mt-5">
         <h2 class="text-center mb-4">Chào mừng {{ $user->name }} đến với hệ thống đặt lịch khám</h2>
         <p class="text-center text-muted mb-5">Đặt lịch nhanh chóng, dễ dàng, theo dõi lịch sử khám bệnh tiện lợi</p>
@@ -33,6 +32,5 @@
             @endforeach
         </div>
     </div>
-
 </body>
 </html>

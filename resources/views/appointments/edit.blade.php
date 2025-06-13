@@ -1,5 +1,5 @@
+@include('navigation.nav')
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <h2>Chỉnh sửa lịch hẹn</h2>
