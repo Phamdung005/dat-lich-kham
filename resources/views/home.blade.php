@@ -10,27 +10,117 @@
 
     <!-- Header -->
     <header class="bg-blue-600 text-white py-4 shadow">
-        <div class="container mx-auto px-4 text-center">
+        <div class="container mx-auto px-4 flex justify-between items-center">
             <h1 class="text-2xl font-bold">Phòng Khám Sức Khỏe Minh Dũng</h1>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="py-20 text-center bg-white shadow-inner">
-        <div class="max-w-2xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Đặt Lịch Khám Nhanh Chóng & Dễ Dàng</h2>
-            <p class="text-lg text-gray-600 mb-8">Chăm sóc sức khỏe chủ động cùng đội ngũ bác sĩ hàng đầu.</p>
-
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-200">
+            <!-- Thanh đăng nhập / đăng ký -->
+            <div class="flex gap-4">
+                <a href="{{ route('login') }}" class="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-4 py-2 rounded transition">
                     Đăng nhập
                 </a>
-                <a href="{{ route('register') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-200">
+                <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded transition">
                     Đăng ký
                 </a>
             </div>
         </div>
-    </section>
+    </header>
+
+
+
+    <section class="relative py-20 bg-white shadow-inner">
+  <div class="max-w-4xl mx-auto px-4 relative overflow-hidden rounded-lg">
+    <!-- Ảnh -->
+    <div id="slider" class="relative h-64 md:h-96 rounded-lg">
+      <img src="/pic/slide1.jpg" alt="Slide 1" class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700" />
+      <img src="/pic/slide2.jpg" alt="Slide 2" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700" />
+      <img src="/pic/slide3.jpg" alt="Slide 3" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700" />
+      <img src="/pic/slide4.jpg" alt="Slide 4" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700" />
+      <img src="/pic/slide5.jpg" alt="Slide 5" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700" />
+    </div>
+
+    <!-- Text nằm trên ảnh -->
+    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4 bg-black bg-opacity-30 text-white">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 drop-shadow-lg">Đặt Lịch Khám Nhanh Chóng & Dễ Dàng</h2>
+      <p class="text-lg drop-shadow-md">Chăm sóc sức khỏe chủ động cùng đội ngũ bác sĩ hàng đầu.</p>
+    </div>
+
+    <!-- Mũi tên điều hướng -->
+    <button id="prevBtn" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-2 rounded-full shadow">
+      &#10094;
+    </button>
+    <button id="nextBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-2 rounded-full shadow">
+      &#10095;
+    </button>
+
+    <!-- Dots -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
+      <button class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-80" data-index="0"></button>
+      <button class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-80" data-index="1"></button>
+      <button class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-80" data-index="2"></button>
+      <button class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-80" data-index="3"></button>
+      <button class="w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-80" data-index="4"></button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('#slider img');
+    const dots = document.querySelectorAll('div.absolute.bottom-4 button');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentIndex = 0;
+    let timer;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.opacity = i === index ? '1' : '0';
+      });
+      dots.forEach((dot, i) => {
+        dot.style.opacity = i === index ? '1' : '0.5';
+      });
+      currentIndex = index;
+    }
+
+    function nextSlide() {
+      let nextIndex = (currentIndex + 1) % slides.length;
+      showSlide(nextIndex);
+    }
+
+    function prevSlide() {
+      let prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+      showSlide(prevIndex);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(nextSlide, 5000);
+    }
+
+    // Event listeners
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetTimer();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetTimer();
+    });
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index'));
+        showSlide(index);
+        resetTimer();
+      });
+    });
+
+    // Khởi tạo
+    showSlide(0);
+    timer = setInterval(nextSlide, 5000);
+  </script>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-300 pt-12 pb-8 mt-auto">
