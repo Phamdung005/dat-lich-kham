@@ -9,21 +9,18 @@
 <body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-blue-600 text-white py-4 shadow">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Phòng Khám Sức Khỏe Minh Dũng</h1>
+ <header class="bg-blue-600 text-white py-4 shadow">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Phòng Khám Sức Khỏe Minh Dũng</h1>
 
-            <!-- Thanh đăng nhập / đăng ký -->
-            <div class="flex gap-4">
-                <a href="{{ route('login') }}" class="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-4 py-2 rounded transition">
-                    Đăng nhập
-                </a>
-                <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded transition">
-                    Đăng ký
-                </a>
-            </div>
+        <div class="space-x-4">
+            <a href="{{ url('/') }}" class="font-semibold underline decoration-white decoration-2">Trang chủ</a>
+            <a href="{{ route('login') }}" class="hover:text-blue-300 font-semibold">Đăng nhập</a>
+            <a href="{{ route('register') }}" class="hover:text-blue-300 font-semibold">Đăng ký</a>
         </div>
-    </header>
+    </div>
+</header>
+
 
 
 
