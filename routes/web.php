@@ -50,6 +50,12 @@ Route::middleware(['auth', 'isPatient'])->group(function () {
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 });
 
+use App\Http\Controllers\Patient\ProfileController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/patient/profile', [ProfileController::class, 'show'])->name('patient.profile.show');
+    Route::put('/patient/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
+});
 
 
 

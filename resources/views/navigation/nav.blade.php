@@ -11,7 +11,8 @@
                 <a class="nav-link" href="{{ route('patient.dashboard') }}">Trang chủ</a>
             </li>
             <li class="nav-item mx-2">
-                <a class="nav-link" href="{{ route('patient.profile') }}">Hồ sơ cá nhân</a>
+                <a class="nav-link" href="{{ route('patient.profile.show') }}">Hồ sơ cá nhân</a>
+
             </li>
             <li class="nav-item mx-2">
                 <a class="nav-link" href="{{ route('appointments.index') }}">Lịch hẹn đã đặt</a>

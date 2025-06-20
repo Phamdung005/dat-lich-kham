@@ -12,11 +12,12 @@ class DoctorSeeder extends Seeder
 {
     public function run(): void
     {
-
         $specialties = [
             'Khoa tim mạch',
             'Khoa da liễu',
-            'Khoa thần kinh'
+            'Khoa thần kinh',
+            'Khoa nội tổng quát',
+            'Khoa tai - mũi - họng'
         ];
 
         foreach ($specialties as $name) {
@@ -24,18 +25,32 @@ class DoctorSeeder extends Seeder
         }
 
         $doctors = [
-            ['name' => 'Dr. A', 'email' => 'a@clinic.com', 'specialty' => 'Khoa tim mạch'],
-            ['name' => 'Dr. B', 'email' => 'b@clinic.com', 'specialty' => 'Khoa da liễu'],
-            ['name' => 'Dr. C', 'email' => 'c@clinic.com', 'specialty' => 'Khoa than kinh'],
-            ['name' => 'Dr. D', 'email' => 'd@clinic.com', 'specialty' => 'Khoa tim mạch'],
-            ['name' => 'Dr. E', 'email' => 'e@clinic.com', 'specialty' => 'Khoa da liễu'],
+            ['name' => 'Dr. Nguyễn Hải',    'email' => 'hai@clinic.com',     'specialty' => 'Khoa tim mạch'],
+            ['name' => 'Dr. Trần Minh',     'email' => 'minh@clinic.com',    'specialty' => 'Khoa tim mạch'],
+            ['name' => 'Dr. Lê Thảo',       'email' => 'thao@clinic.com',    'specialty' => 'Khoa tim mạch'],
+
+            ['name' => 'Dr. Võ An',         'email' => 'an@clinic.com',      'specialty' => 'Khoa da liễu'],
+            ['name' => 'Dr. Phạm Nhi',      'email' => 'nhi@clinic.com',     'specialty' => 'Khoa da liễu'],
+            ['name' => 'Dr. Hoàng Tuyết',   'email' => 'tuyet@clinic.com',   'specialty' => 'Khoa da liễu'],
+
+            ['name' => 'Dr. Đỗ Khoa',       'email' => 'khoa@clinic.com',    'specialty' => 'Khoa thần kinh'],
+            ['name' => 'Dr. Trịnh Hưng',    'email' => 'hung@clinic.com',    'specialty' => 'Khoa thần kinh'],
+            ['name' => 'Dr. Mai Vy',        'email' => 'vy@clinic.com',      'specialty' => 'Khoa thần kinh'],
+
+            ['name' => 'Dr. Vũ Hạnh',       'email' => 'hanh@clinic.com',    'specialty' => 'Khoa nội tổng quát'],
+            ['name' => 'Dr. Lâm Duy',       'email' => 'duy@clinic.com',     'specialty' => 'Khoa nội tổng quát'],
+            ['name' => 'Dr. Nguyễn Quỳnh',  'email' => 'quynh@clinic.com',   'specialty' => 'Khoa nội tổng quát'],
+
+            ['name' => 'Dr. Bùi Khánh',     'email' => 'khanh@clinic.com',   'specialty' => 'Khoa tai - mũi - họng'],
+            ['name' => 'Dr. Hồ Thanh',      'email' => 'thanh@clinic.com',   'specialty' => 'Khoa tai - mũi - họng'],
+            ['name' => 'Dr. Tạ Yến',        'email' => 'yen@clinic.com',     'specialty' => 'Khoa tai - mũi - họng'],
         ];
 
         foreach ($doctors as $doc) {
             $user = User::create([
                 'name' => $doc['name'],
                 'email' => $doc['email'],
-                'password' => Hash::make('123456'), 
+                'password' => Hash::make('123456'),
                 'role' => 'doctor',
             ]);
 
