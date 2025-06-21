@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Patient\ProfileController;
+use App\Http\Controllers\Patient\PatientDashboardController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -17,7 +19,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', function () {
     return view('home'); 
 });
-
 
 Route::get('/dashboard', function () {
     $role = Auth::user()->role;
@@ -50,18 +51,24 @@ Route::middleware(['auth', 'isPatient'])->group(function () {
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 });
 
-use App\Http\Controllers\Patient\ProfileController;
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/patient/profile', [ProfileController::class, 'show'])->name('patient.profile.show');
     Route::put('/patient/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
 });
 
-use App\Http\Controllers\Patient\PatientDashboardController;
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/patient/dashboard', [PatientDashboardController::class, 'index'])->name('patient.dashboard');
 });
+
+Route::middleware(['auth'])->prefix('doctor')->group(function () {
+    Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
+    Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
+    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
+});
+
+Route::get('/patient/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments')->middleware('auth');
 
 
 

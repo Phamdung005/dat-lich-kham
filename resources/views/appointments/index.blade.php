@@ -49,13 +49,16 @@
                         </td>
                         <td>{{ $appointment->notes }}</td>
                         <td>
-                            <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-sm btn-primary">Sửa</a>
-
-                            <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
-                            </form>
+                            @if($appointment->status == 'pending')
+                                <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
+                                </form>
+                            @else
+                                <span class="text-muted">Không thể sửa</span>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

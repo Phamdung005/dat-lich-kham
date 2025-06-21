@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
-    <a class="navbar-brand fw-bold text-primary" href="#">ĐẶT LỊCH KHÁM</a>
+    <a class="navbar-brand fw-bold text-primary">ĐẶT LỊCH KHÁM</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>

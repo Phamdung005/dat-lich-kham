@@ -10,7 +10,6 @@ use App\Models\Doctor;
 
 class AppointmentController extends Controller
 {
-    //
     public function create(Request $request) {
         $doctorId = $request->query('doctor_id'); 
         $doctors = Doctor::all();
@@ -70,8 +69,8 @@ class AppointmentController extends Controller
             'appointment_time' => $datetime,
             'notes' => $request->notes
         ]);
+        return redirect()->route('appointments.index')->with('success', 'Đã cập nhật lịch hẹn.');
 
-        return redirect()->route('appointments.index')->with('success', 'Cập nhật lịch hẹn thành công.');
     }
     
     public function destroy(Appointment $appointment)

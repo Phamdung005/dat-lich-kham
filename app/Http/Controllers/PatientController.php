@@ -24,4 +24,14 @@ class PatientController extends Controller
         return view('patient.doctors_by_specialty', compact('specialty'));
     }
 
+    public function indexAppointments()
+    {
+        $appointments = Appointment::where('patient_id', auth()->id())
+            ->with('doctor')
+            ->orderBy('appointment_time', 'desc')
+            ->get();
+
+        return view('appointments.index', compact('appointments'));
+    }
+
 }
