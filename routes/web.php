@@ -57,6 +57,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/patient/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
 });
 
+use App\Http\Controllers\Patient\PatientDashboardController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/patient/dashboard', [PatientDashboardController::class, 'index'])->name('patient.dashboard');
+});
+
 
 
 
