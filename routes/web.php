@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
     Route::resource('doctors', \App\Http\Controllers\Admin\DoctorController::class);
     Route::resource('patients', \App\Http\Controllers\Admin\PatientController::class);
-    Route::get('dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
 Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])->name('specialty.doctors');
@@ -55,8 +55,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patient/profile', [ProfileController::class, 'show'])->name('patient.profile.show');
     Route::put('/patient/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
 });
-
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/patient/dashboard', [PatientDashboardController::class, 'index'])->name('patient.dashboard');
