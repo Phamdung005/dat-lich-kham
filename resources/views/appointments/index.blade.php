@@ -34,8 +34,11 @@
                     <tr>
                         <td>{{ $appointment->doctor->name }}</td>
                         <td>{{ $appointment->doctor->specialty->name ?? 'Chưa có' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i') }}</td>
+                        @php
+                            $startTime = \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i');
+                        @endphp
+                        <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('d/m/Y') }}</td>
+                        <td>{{ $slotDisplayMap[$startTime] ?? $startTime }}</td>
                         <td>
                             @if($appointment->status == 'pending')
                                 <span class="badge bg-warning text-dark">Chờ xác nhận</span>
@@ -49,16 +52,17 @@
                         </td>
                         <td>{{ $appointment->notes }}</td>
                         <td>
+                        @if($appointment->status != 'cancelled')
                             @if($appointment->status == 'pending')
                                 <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-sm btn-primary">Sửa</a>
-                                <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
-                                </form>
-                            @else
-                                <span class="text-muted">Không thể sửa</span>
                             @endif
+                            <form action="{{ route('appointments.cancel', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-warning">Hủy lịch</button>
+                            </form>
+                        @else
+                            <span class="text-muted">Đã hủy</span>
+                        @endif
                         </td>
                     </tr>
                     @endforeach

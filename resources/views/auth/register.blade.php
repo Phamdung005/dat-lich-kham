@@ -12,7 +12,7 @@
     <!-- Navigation -->
     <nav class="bg-blue-600 text-white shadow">
         <div class="container mx-auto px-4 flex justify-between items-center py-4">
-            <a href="{{ url('/') }}" class="text-2xl font-bold hover:text-blue-300">Phòng Khám Minh Dũng</a>
+            <a href="{{ url('/') }}" class="text-2xl font-bold hover:text-blue-300">Phòng Khám Sức Khỏe Minh Dũng</a>
             <div class="space-x-4">
                 <a href="{{ url('/') }}" class="hover:text-blue-300 font-semibold">Trang chủ</a>
                 <a href="{{ route('login') }}" class="hover:text-blue-300 font-semibold">Đăng nhập</a>

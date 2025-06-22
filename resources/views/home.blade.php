@@ -14,7 +14,7 @@
         <h1 class="text-2xl font-bold">Phòng Khám Sức Khỏe Minh Dũng</h1>
 
         <div class="space-x-4">
-            <a href="{{ url('/') }}" class="font-semibold underline decoration-white decoration-2">Trang chủ</a>
+            <a href="{{ url('/') }}" class="hover:text-blue-300 font-semibold">Trang chủ</a>
             <a href="{{ route('login') }}" class="hover:text-blue-300 font-semibold">Đăng nhập</a>
             <a href="{{ route('register') }}" class="hover:text-blue-300 font-semibold">Đăng ký</a>
         </div>

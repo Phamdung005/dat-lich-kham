@@ -48,7 +48,7 @@ Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])
 Route::middleware(['auth', 'isPatient'])->group(function () {
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
-    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -63,11 +63,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
     Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
-    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('doctor.appointments.cancel');
 });
 
 Route::get('/patient/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments')->middleware('auth');
 
-
-
-
+Route::get('/api/available-times', [AppointmentController::class, 'getAvailableTimes'])->name('appointments.available-times');
