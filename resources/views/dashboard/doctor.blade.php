@@ -33,7 +33,7 @@
             <div class="card shadow-sm mb-4" style="max-width: 400px;">
                 <div class="card-body text-center">
                     @if($user->avatar)
-                        <img src="{{ asset($user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     @else
                         <img src="{{ asset('default-avatar.png') }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     @endif

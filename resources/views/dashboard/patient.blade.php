@@ -41,7 +41,7 @@
                         <div class="card h-100 shadow-sm text-center" style="border: 2px solid #000;">
                             <div class="card-body">
                                 @if($doctor->user->avatar)
-                                    <img src="{{ asset($doctor->user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                    <img src="{{ asset('storage/' . $doctor->user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                                 @else
                                     <img src="{{ asset('default-avatar.png') }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                                 @endif
