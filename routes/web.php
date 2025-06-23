@@ -57,6 +57,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/doctor/profileDoctor', [DoctorController::class, 'showProfile'])->name('doctor.profileDoctor.show');
+});
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/patient/dashboard', [PatientDashboardController::class, 'index'])->name('patient.dashboard');
 });
 
@@ -69,3 +73,5 @@ Route::middleware(['auth'])->prefix('doctor')->group(function () {
 Route::get('/patient/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments')->middleware('auth');
 
 Route::get('/api/available-times', [AppointmentController::class, 'getAvailableTimes'])->name('appointments.available-times');
+
+Route::put('/doctor/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
