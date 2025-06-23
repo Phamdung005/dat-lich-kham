@@ -8,6 +8,7 @@ use App\Models\Doctor;
 use App\Models\Specialty;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 class AdminDoctorController extends Controller
@@ -99,15 +100,14 @@ public function store(Request $request)
         'password' => 'required|min:6'
     ]);
 
-    // ✅ Tạo user trước (hash mật khẩu bằng Hash::make)
+    // Tạo user mới (bác sĩ)
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'role' => 'doctor',
-        'password' => Hash::make($request->password) // <-- Đây là dòng bạn hỏi
+        'password' => Hash::make($request->password)
     ]);
 
-    // ✅ Tạo bản ghi doctor gắn với user
     Doctor::create([
         'name' => $request->name,
         'email' => $request->email,
@@ -115,7 +115,10 @@ public function store(Request $request)
         'specialty_id' => $request->specialty_id
     ]);
 
-    return redirect()->route('admin.dashboard')->with('success', 'Thêm bác sĩ thành công.');
+    // ✅ BẮT BUỘC đăng nhập lại admin cũ (để ngăn việc tự login bác sĩ)
+    Auth::login(Auth::user());
+
+    return redirect('/admin/dashboard')->with('success', 'Thêm bác sĩ thành công.');
 }
 }
 
