@@ -32,30 +32,34 @@
     </div>
 </form>
 
-
-        @foreach($specialties as $specialty)
-            <div class="mb-5">
-                <h4 class="text-primary border-bottom pb-2 mb-4">{{ $specialty->name }}</h4>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    @foreach($specialty->doctors as $doctor)
-                        <div class="col">
-                            <div class="card h-100 shadow-sm" style="border: 2px solid #000;">
-                                <div class="card-body">
-                                    <h5 class="card-title text-primary">{{ $doctor->name }}</h5>
-                                    <p class="card-text text-muted mb-1">Email: {{ $doctor->email }}</p>
-                                    <p class="card-text text-muted">Chuyên khoa: {{ $specialty->name }}</p>
-                                    <form action="{{ route('appointment.create') }}" method="GET">
-                                        <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-                                        <button type="submit" class="btn btn-primary btn-sm mt-2">Đặt lịch khám</button>
-                                    </form>
-                                </div>
+    @foreach($specialties as $specialty)
+        <div class="mb-5">
+            <h4 class="text-primary border-bottom pb-2 mb-4">{{ $specialty->name }}</h4>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach($specialty->doctors as $doctor)
+                    <div class="col">
+                        <div class="card h-100 shadow-sm text-center" style="border: 2px solid #000;">
+                            <div class="card-body">
+                                @if($doctor->user->avatar)
+                                    <img src="{{ asset($doctor->user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                @else
+                                    <img src="{{ asset('default-avatar.png') }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                @endif
+                                <h5 class="card-title text-primary">{{ $doctor->name }}</h5>
+                                <p class="card-text text-muted mb-1">Email: {{ $doctor->email }}</p>
+                                <p class="card-text text-muted mb-1">SĐT: {{ $doctor->user->phone }}</p>
+                                <p class="card-text text-muted">Chuyên khoa: {{ $specialty->name }}</p>
+                                <form action="{{ route('appointment.create') }}" method="GET">
+                                    <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm mt-2">Đặt lịch khám</button>
+                                </form>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

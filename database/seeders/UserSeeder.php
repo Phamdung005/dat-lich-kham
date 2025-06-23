@@ -19,22 +19,6 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $doctorUser = User::create([
-            'name' => 'Doctor User',
-            'email' => 'doctor@test.com',
-            'password' => Hash::make('123456'),
-            'role' => 'doctor',
-        ]);
-
-        $specialty = Specialty::where('name', 'Khoa tim mạch')->first();
-
-        Doctor::create([
-            'name' => 'Dr. Strange',
-            'email' => 'doctor@test.com',
-            'user_id' => $doctorUser->id,
-            'specialty_id' => $specialty->id,
-        ]);
-
         User::create([
             'name' => 'Patient',
             'email' => 'patient@test.com',
