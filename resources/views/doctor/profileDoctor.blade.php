@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9db1097153.js" crossorigin="anonymous"></script>
     <style>
         body {
             background-color: #f4f8fb;
@@ -51,11 +52,12 @@
                     </div>
                 </div>
             </div>
-            <ul class="nav flex-column">
+            <ul class="nav flex-column text-start">
                 <li class="nav-item mb-2">
-                    <a class="nav-link active" href="{{ route('doctor.dashboard') }}">Trang chủ</a>
+                    <a class="nav-link active" href="{{ route('doctor.dashboard') }}"><i class="fa-solid fa-house"></i> Trang chủ</a>
+                </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}">Hồ sơ cá nhân</a>
+                    <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
                     <form method="POST" action="{{ route('logout') }}">

@@ -33,7 +33,7 @@
             <div class="card shadow-sm mb-4" style="max-width: 400px;">
                 <div class="card-body text-center">
                     @if($user->avatar)
-                        <img src="{{ asset('storage/' . $user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src="{{ asset($user->avatar) }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     @else
                         <img src="{{ asset('default-avatar.png') }}" class="img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     @endif
@@ -54,9 +54,10 @@
             </div>
             <ul class="nav flex-column text-start" >
                 <li class="nav-item mb-2">
-                    <a class="nav-link active" href="{{ route('doctor.dashboard') }}"><i class="fa-solid fa-house"></i></t>Trang chủ</a>
+                    <a class="nav-link active" href="{{ route('doctor.dashboard') }}"><i class="fa-solid fa-house"></i> Trang chủ</a>
+                </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i></t>Hồ sơ cá nhân</a>
+                    <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
                     <form method="POST" action="{{ route('logout') }}">
