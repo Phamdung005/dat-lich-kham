@@ -11,6 +11,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Patient\ProfileController;
 use App\Http\Controllers\Patient\PatientDashboardController;
 use App\Http\Controllers\Admin\AdminDoctorController;
+use App\Http\Controllers\NotificationController;
 
 // ---------------------- Auth routes ----------------------
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -50,7 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patient/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments');
 });
 
-Route::middleware(['auth', 'isPatient'])->group(function () {
+// ✅ Các route dành riêng cho bệnh nhân (hủy/sửa lịch + xem thông báo)
+Route::middleware(['auth', 'isPatient'])->prefix('patient')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('patient.notifications');
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
@@ -58,17 +61,9 @@ Route::middleware(['auth', 'isPatient'])->group(function () {
 
 // ---------------------- Doctor routes ----------------------
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
-
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
-
-    Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
     Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
-    Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
-
-
-    Route::get('/profile', [DoctorController::class, 'showProfile'])->name('doctor.profileDoctor.show');
-    Route::put('/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
 });
 
 
@@ -83,8 +78,6 @@ Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
     Route::delete('doctors/{id}', [AdminDoctorController::class, 'destroy'])->name('admin.doctor.delete');
 
     Route::get('doctors/create', [AdminDoctorController::class, 'create'])->name('admin.doctors.create');
-    Route::post('doctors', [AdminDoctorController::class, 'store'])->name('admin.doctors.store'); // ✅ THÊM DÒNG NÀY
+    Route::post('doctors', [AdminDoctorController::class, 'store'])->name('admin.doctors.store');
     Route::get('doctors/{id}/edit', [AdminDoctorController::class, 'edit'])->name('admin.doctors.edit');
 });
-
-

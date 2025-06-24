@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Specialty;
+use App\Models\Notification;
 
 class PatientDashboardController extends Controller
 {
@@ -26,7 +28,8 @@ class PatientDashboardController extends Controller
         ->get();
 
         $user = auth()->user();
+        $unreadCount = Notification::where('user_id', $user->id)->where('is_read', false)->count();
 
-        return view('dashboard.patient', compact('user', 'specialties', 'allSpecialties'));
+        return view('dashboard.patient', compact('user', 'specialties', 'allSpecialties', 'unreadCount'));
     }
 }

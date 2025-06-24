@@ -14,25 +14,30 @@ use Illuminate\Support\Facades\Auth;
 class AdminDoctorController extends Controller
 {
     public function index(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        $specialty_id = $request->input('specialty_id');
+{
+    $keyword = $request->input('keyword');
+    $specialty_id = $request->input('specialty_id');
 
-        $query = Doctor::with('specialty');
+    $query = Doctor::with('specialty');
 
-        if ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
-        }
-
-        if ($specialty_id) {
-            $query->where('specialty_id', $specialty_id);
-        }
-
-        $doctors = $query->get();
-        $allSpecialties = Specialty::all();
-
-        return view('dashboard.admin', compact('doctors', 'allSpecialties'));
+    if ($keyword) {
+        $query->where('name', 'like', '%' . $keyword . '%');
     }
+
+    if ($specialty_id) {
+        $query->where('specialty_id', $specialty_id);
+    }
+
+    $doctors = $query->get();
+    $allSpecialties = Specialty::all();
+
+    // ✅ Thêm thống kê
+    $totalDoctors = User::where('role', 'doctor')->count();
+    $totalPatients = User::where('role', 'patient')->count();
+
+    return view('dashboard.admin', compact('doctors', 'allSpecialties', 'totalDoctors', 'totalPatients'));
+}
+
 
     public function update(Request $request, $id)
     {
