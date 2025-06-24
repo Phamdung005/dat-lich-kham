@@ -74,7 +74,6 @@
                     Tổng số bệnh nhân: <span class="text-success">{{ $totalPatients }}</span>
                 </p>
             </div>
-<<<<<<< HEAD
             <div class="col-md-4">
                 <select name="specialty_id" class="form-select">
                     <option value="">Tất cả chuyên khoa</option>
@@ -85,11 +84,6 @@
                     @endforeach
                 </select>
             </div>
-            <div class="d-flex justify-content-end mb-3">
-                <a href="{{ route('admin.doctors.create') }}" class="btn btn-success">+ Thêm Bác sĩ</a>
-            </div>
-=======
->>>>>>> e2ae8602e4ef5dadb154cf694ad2c7b89e97f7a1
 
             <!-- Danh sách bác sĩ -->
             @foreach($allSpecialties as $specialty)
