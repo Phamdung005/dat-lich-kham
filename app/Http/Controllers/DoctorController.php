@@ -42,7 +42,7 @@ class DoctorController extends Controller
 
     public function cancel(Appointment $appointment)
     {
-        if ($appointment->doctor_id !== Auth::id()) {
+        if ((int) $appointment->doctor_id !== Auth::id()) {
             abort(403);
         }
 
@@ -51,6 +51,7 @@ class DoctorController extends Controller
 
         return redirect()->back()->with('success', 'Lịch hẹn đã bị hủy.');
     }
+
 
     public function showProfile() {
         $user = auth() -> user();

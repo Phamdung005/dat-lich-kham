@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
     Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
-    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('doctor.appointments.cancel');
+    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
 });
 
 // ---------------------- Public specialty route ----------------------
