@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Appointment;
+use App\Models\Notification;
+
+class DoctorAppointmentController extends Controller
+{
+    public function confirm(Appointment $appointment)
+    {
+        // Kiểm tra bác sĩ là chủ nhân lịch hẹn
+        if ($appointment->doctor_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // Chỉ cho phép xác nhận nếu đang ở trạng thái 'pending'
+        if ($appointment->status !== 'pending') {
+            return back()->with('error', 'Lịch hẹn không hợp lệ.');
+        }
+
+        // Cập nhật trạng thái
+        $appointment->update(['status' => 'confirmed']);
+
+        // Tạo thông báo cho bệnh nhân
+        Notification::create([
+            'user_id' => $appointment->patient_id,
+            'message' => 'Lịch hẹn của bạn với bác sĩ ' . $appointment->doctor->name .
+                         ' vào lúc ' . $appointment->appointment_time->format('H:i d/m/Y') . ' đã được xác nhận.',
+        ]);
+
+        return back()->with('success', 'Đã xác nhận lịch hẹn.');
+    }
+}
