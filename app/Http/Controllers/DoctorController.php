@@ -9,28 +9,43 @@ use Illuminate\Support\Facades\Auth;
 class DoctorController extends Controller
 {
     public function dashboard() {
-        $appointments = Appointment::where('doctor_id', Auth::id())
-            ->orderBy('appointment_time', 'asc')
-            ->get();
+        $doctor = auth()->user()->doctor;
 
-        $slotDisplayMap = [
-            '08:00' => '08:00 - 09:30',
-            '09:30' => '09:30 - 11:00',
-            '11:00' => '11:00 - 12:30',
-            '12:30' => '12:30 - 14:00',
-            '14:00' => '14:00 - 15:30',
-            '15:30' => '15:30 - 17:00',
-            '17:00' => '17:00 - 18:30',
-        ];
+        if (!$doctor) {
+            abort(403, 'Không tìm thấy thông tin bác sĩ.');
+        }
 
         $user = auth()->user();
 
-        return view('dashboard.doctor', compact('appointments', 'slotDisplayMap', 'user'));
+        $totalAppointments = Appointment::where('doctor_id', $doctor->id)->count();
+
+        $pendingCount = Appointment::where('doctor_id', $doctor->id)
+            ->where('status', 'pending')->count();
+
+        $confirmedCount = Appointment::where('doctor_id', $doctor->id)
+            ->where('status', 'confirmed')->count();
+
+        $cancelledCount = Appointment::where('doctor_id', $doctor->id)
+            ->where('status', 'cancelled')->count();
+
+        $completedCount = Appointment::where('doctor_id', $doctor->id)
+            ->where('status', 'completed')->count();
+
+        return view('dashboard.doctor', compact(
+            'user',
+            'totalAppointments',
+            'pendingCount',
+            'confirmedCount',
+            'cancelledCount',
+            'completedCount'
+        ));
     }
+
 
     public function confirm(Appointment $appointment)
     {
-        if ($appointment->doctor_id !== Auth::id()) {
+        $doctor = auth()->user()->doctor;
+        if ($appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
 
@@ -42,7 +57,8 @@ class DoctorController extends Controller
 
     public function cancel(Appointment $appointment)
     {
-        if ((int) $appointment->doctor_id !== Auth::id()) {
+        $doctor = auth()->user()->doctor;
+        if ((int) $appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
 
@@ -58,6 +74,31 @@ class DoctorController extends Controller
         return view('doctor.profileDoctor', compact('user'));
     }
 
+    public function appointmentDr() {
+        $doctor = auth()->user()->doctor; 
+        if (!$doctor) {
+            abort(403, 'Không tìm thấy thông tin bác sĩ.');
+        }
+
+        $appointments = Appointment::where('doctor_id', $doctor->id)
+            ->orderBy('appointment_time', 'asc')
+            ->get();
+
+        $slotDisplayMap = [
+            '08:00' => '08:00 - 09:30',
+            '09:30' => '09:30 - 11:00',
+            '11:00' => '11:00 - 12:30',
+            '12:30' => '12:30 - 14:00',
+            '14:00' => '14:00 - 15:30',
+            '15:30' => '15:30 - 17:00',
+            '17:00' => '17:00 - 18:30',
+        ];
+
+        $user = auth()->user();
+
+        return view('doctor.appointmentdr', compact('appointments', 'slotDisplayMap', 'user'));
+    }
+
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
@@ -67,6 +108,7 @@ class DoctorController extends Controller
             $path = $file->store('avatars', 'public'); 
             $user->avatar = $path;
         }
+        $user->name = $request->input('name');
         $user->phone = $request->input('phone');
 
         $user->save();
@@ -74,5 +116,22 @@ class DoctorController extends Controller
 
         return redirect()->back()->with('success', 'Cập nhật thành công!');
     }
+    public function complete(Appointment $appointment)
+    {
+        $doctor = auth()->user()->doctor;
+        if (!$doctor || $appointment->doctor_id !== $doctor->id) {
+            abort(403);
+        }
+
+        if ($appointment->status !== 'confirmed') {
+            return redirect()->back()->with('error', 'Chỉ có thể hoàn thành lịch đã xác nhận.');
+        }
+
+        $appointment->status = 'completed';
+        $appointment->save();
+
+        return redirect()->back()->with('success', 'Lịch hẹn đã được đánh dấu là hoàn thành.');
+    }
+
 
 }

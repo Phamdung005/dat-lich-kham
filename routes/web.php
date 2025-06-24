@@ -57,16 +57,20 @@ Route::middleware(['auth', 'isPatient'])->group(function () {
 });
 
 // ---------------------- Doctor routes ----------------------
-Route::middleware(['auth'])->group(function () {
-    Route::get('/doctor/profileDoctor', [DoctorController::class, 'showProfile'])->name('doctor.profileDoctor.show');
-    Route::put('/doctor/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
-});
-
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
+
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
+
+    Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
     Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
+
+
+    Route::get('/profile', [DoctorController::class, 'showProfile'])->name('doctor.profileDoctor.show');
+    Route::put('/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
 });
+
 
 // ---------------------- Public specialty route ----------------------
 Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])->name('specialty.doctors');

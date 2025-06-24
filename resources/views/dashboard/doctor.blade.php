@@ -57,6 +57,9 @@
                     <a class="nav-link active" href="{{ route('doctor.dashboard') }}"><i class="fa-solid fa-house"></i> Trang chủ</a>
                 </li>
                 <li class="nav-item mb-2">
+                    <a class="nav-link active" href="{{ route('doctor.appointmentdr') }}"><i class="fa-solid fa-calendar-check"></i> Lịch hẹn</a>
+                </li>
+                <li class="nav-item mb-2">
                     <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
@@ -68,64 +71,49 @@
             </ul>
         </div>
         <div class="col-md-10 p-4">
-            <h2 class="mb-4">Lịch hẹn của bác sĩ</h2>
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
-            @if($appointments->isEmpty())
-                <p>Hiện tại bạn chưa có lịch hẹn nào.</p>
-            @else
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Bệnh nhân</th>
-                            <th>Ngày khám</th>
-                            <th>Thời gian khám</th>
-                            <th>Ghi chú</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($appointments as $appointment)
-                        <tr>
-                            <td>{{ $appointment->patient->name ?? 'không' }}</td>
-                            @php
-                                $startTime = \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i');
-                            @endphp
-                            <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('d/m/Y') }}</td>
-                            <td>{{ $slotDisplayMap[$startTime] ?? $startTime }}</td>
-                            <td>{{ $appointment->notes }}</td>
-                            <td>
-                                @if($appointment->status == 'pending')
-                                    <span class="badge bg-warning text-dark">Chờ xác nhận</span>
-                                @elseif($appointment->status == 'confirmed')
-                                    <span class="badge bg-success">Đã xác nhận</span>
-                                @elseif($appointment->status == 'cancelled')
-                                    <span class="badge bg-danger">Đã hủy</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($appointment->status == 'pending')
-                                    <form action="{{ route('appointments.confirm', $appointment) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-success">Xác nhận</button>
-                                    </form>
-                                    <form action="{{ route('appointments.cancel', $appointment) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-danger">Hủy</button>
-                                    </form>
-                                @else
-                                    <span class="text-muted">Không khả dụng</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
+            <h2 class="mb-4">Thống kê lịch hẹn</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Tất cả</h5>
+                            <p class="card-text fs-4">{{ $totalAppointments }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Chờ xác nhận</h5>
+                            <p class="card-text fs-4">{{ $pendingCount }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Đã xác nhận</h5>
+                            <p class="card-text fs-4">{{ $confirmedCount }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Đã hủy</h5>
+                            <p class="card-text fs-4">{{ $cancelledCount }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Đã hoàn thành</h5>
+                            <p class="card-text fs-4">{{ $completedCount }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

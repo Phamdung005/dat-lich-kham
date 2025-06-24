@@ -26,8 +26,8 @@
                 </select>
             </div>
             <div class="d-flex justify-content-end mb-3">
-    <a href="{{ route('admin.doctors.create') }}" class="btn btn-success">+ Thêm Bác sĩ</a>
-</div>
+                <a href="{{ route('admin.doctors.create') }}" class="btn btn-success">+ Thêm Bác sĩ</a>
+            </div>
 
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
