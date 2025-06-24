@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
-    <a class="navbar-brand fw-bold text-primary" href="{{ url('/dashboard/patient') }}">ĐẶT LỊCH KHÁM</a>
+    <a class="navbar-brand fw-bold text-primary" href="{{ url('/dashboard/patient') }}">Phòng Khám Sức Khỏe Minh Dũng</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
