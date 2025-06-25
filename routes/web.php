@@ -12,6 +12,7 @@ use App\Http\Controllers\Patient\ProfileController;
 use App\Http\Controllers\Patient\PatientDashboardController;
 use App\Http\Controllers\Admin\AdminDoctorController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\DoctorAppointmentController;
 
 // ---------------------- Auth routes ----------------------
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -68,13 +69,19 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/doctor/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
 });
 
+
+
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
-    Route::post('/appointments/{appointment}/confirm', [DoctorController::class, 'confirm'])->name('appointments.confirm');
-    Route::post('/appointments/{appointment}/cancel', [DoctorController::class, 'cancel'])->name('appointments.cancel');
+
+    // ✅ Dùng DoctorAppointmentController cho xác nhận & hủy lịch hẹn (đã có thông báo)
+    Route::post('/appointments/{appointment}/confirm', [DoctorAppointmentController::class, 'confirm'])->name('appointments.confirm');
+    Route::post('/appointments/{appointment}/cancel', [DoctorAppointmentController::class, 'cancel'])->name('appointments.cancel');
+
     Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
 });
+
 
 
 // ---------------------- Public specialty route ----------------------
