@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Hồ sơ cá nhân')
+@include('navigation.nav')
 
 @section('content')
 <div class="container profile-container bg-white p-4 rounded shadow mt-5">
