@@ -56,8 +56,11 @@ Route::middleware(['auth', 'isPatient'])->prefix('patient')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('patient.notifications');
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
-    Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+
+    // ✅ Sửa tên route tại đây
+    Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('patient.appointments.cancel');
 });
+
 
 // ---------------------- Doctor routes ----------------------
 Route::middleware(['auth'])->group(function () {

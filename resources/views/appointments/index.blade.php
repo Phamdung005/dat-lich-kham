@@ -56,10 +56,11 @@
                             @if($appointment->status == 'pending')
                                 <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-sm btn-primary">Sửa</a>
                             @endif
-                            <form action="{{ route('appointments.cancel', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-warning">Hủy lịch</button>
-                            </form>
+                           <form action="{{ route('patient.appointments.cancel', $appointment->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?');">
+    @csrf
+    <button type="submit" class="btn btn-sm btn-warning">Hủy lịch</button>
+</form>
+
                         @else
                             <span class="text-muted">Đã hủy</span>
                         @endif
