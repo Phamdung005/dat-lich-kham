@@ -57,7 +57,10 @@
                     <a class="nav-link active" href="{{ route('doctor.dashboard') }}"><i class="fa-solid fa-house"></i> Trang chủ</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link active" href="{{ route('doctor.appointmentdr') }}"><i class="fa-solid fa-calendar-check"></i> Lịch hẹn</a>
+                    <a class="nav-link active" href="{{ route('doctor.appointmentdr') }}"><i class="fa-solid fa-calendar-check"></i> Lịch hẹn hiện tại</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link active" href="{{ route('doctor.historyapp') }}"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử cuộc hẹn</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>

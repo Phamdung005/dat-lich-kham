@@ -80,6 +80,7 @@ Route::middleware(['auth'])->prefix('doctor')->group(function () {
 
     Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
+    Route::get('/history', [DoctorController::class, 'history'])->name('doctor.historyapp');
 });
 
 

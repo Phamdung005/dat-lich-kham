@@ -74,7 +74,7 @@
             </ul>
         </div>
         <div class="col-md-10 p-4">
-            <h2 class="mb-4">Lịch hẹn của bác sĩ</h2>
+            <h2 class="mb-4">Lịch sử cuộc hẹn của bác sĩ</h2>
 
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>

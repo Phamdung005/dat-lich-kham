@@ -81,6 +81,7 @@ class DoctorController extends Controller
         }
 
         $appointments = Appointment::where('doctor_id', $doctor->id)
+            ->whereIn('status', ['pending', 'confirmed'])
             ->orderBy('appointment_time', 'asc')
             ->get();
 
@@ -116,6 +117,7 @@ class DoctorController extends Controller
 
         return redirect()->back()->with('success', 'Cập nhật thành công!');
     }
+
     public function complete(Appointment $appointment)
     {
         $doctor = auth()->user()->doctor;
@@ -133,5 +135,28 @@ class DoctorController extends Controller
         return redirect()->back()->with('success', 'Lịch hẹn đã được đánh dấu là hoàn thành.');
     }
 
+    public function history()
+    {
+        $doctor = auth()->user()->doctor;
 
+        if(!$doctor) {
+            abort(403, 'Không tìm thấy thông tin bác sĩ.');
+        }
+        $appointments = Appointment::where('doctor_id', $doctor->id)
+            ->whereIn('status', ['completed', 'cancelled'])
+            ->orderBy('appointment_time', 'desc')
+            ->get();
+
+        $slotDisplayMap = [
+            '08:00' => '08:00 - 09:30',
+            '09:30' => '09:30 - 11:00',
+            '11:00' => '11:00 - 12:30',
+            '12:30' => '12:30 - 14:00',
+            '14:00' => '14:00 - 15:30',
+            '15:30' => '15:30 - 17:00',
+            '17:00' => '17:00 - 18:30',
+        ];
+        $user = auth()->user();
+        return view('doctor.historyapp', compact('appointments', 'slotDisplayMap', 'user'));
+    }
 }
