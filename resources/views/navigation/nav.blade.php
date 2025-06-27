@@ -4,46 +4,92 @@
                     ->count();
 @endphp
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Bệnh Nhân</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f8fb;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+            padding: 1.5rem 1rem;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            color: #0d6efd !important;
+        }
+        .notification-badge {
+            font-size: 0.75rem;
+            position: absolute;
+            top: 0;
+            right: -10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar brand -->
+<nav class="navbar navbar-light bg-light px-4 shadow-sm">
     <a class="navbar-brand fw-bold text-primary">Phòng Khám Sức Khỏe Minh Dũng</a>
+</nav>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
-            <li class="nav-item mx-2">
-                <a class="nav-link" href="{{ route('patient.dashboard') }}">Trang chủ</a>
-            </li>
-            <li class="nav-item mx-2">
-                <a class="nav-link" href="{{ route('patient.profile.show') }}">Hồ sơ cá nhân</a>
-            </li>
-            <li class="nav-item mx-2">
-                <a class="nav-link" href="{{ route('appointments.index') }}">Lịch hẹn đã đặt</a>
-            </li>
-
-            @if(Auth::check() && Auth::user()->role == 'patient')
-                <li class="nav-item mx-2 position-relative">
-                    <a class="nav-link p-0" href="{{ route('patient.notifications') }}">
-                        <img src="{{ asset('icons/bell.svg') }}" alt="Thông báo" style="width: 24px; height: 24px;">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar dọc -->
+        <div class="col-md-2 sidebar">
+            <h5 class="fw-bold mb-4 text-center text-primary">Bệnh Nhân</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('patient.dashboard') ? 'active' : '' }}" href="{{ route('patient.dashboard') }}">
+                        🏠 Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('patient.profile.show') ? 'active' : '' }}" href="{{ route('patient.profile.show') }}">
+                        👤 Hồ sơ cá nhân
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('appointments.index') ? 'active' : '' }}" href="{{ route('appointments.index') }}">
+                        📅 Lịch hẹn đã đặt
+                    </a>
+                </li>
+                <li class="nav-item mb-2 position-relative">
+                    <a class="nav-link {{ request()->routeIs('patient.notifications') ? 'active' : '' }}" href="{{ route('patient.notifications') }}">
+                        🔔 Thông báo
                         @if($unreadCount > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <span class="badge bg-danger rounded-pill notification-badge">
                                 {{ $unreadCount }}
                             </span>
                         @endif
                     </a>
                 </li>
-            @endif
+                <li class="nav-item mt-3">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="btn btn-outline-danger btn-sm w-100">
+                            🚪 Đăng xuất
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
 
-            <li class="nav-item mx-2">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="btn btn-outline-danger btn-sm" type="submit">Đăng xuất</button>
-                </form>
-            </li>
-        </ul>
+        <!-- Nội dung chính -->
+        <div class="col-md-10 p-4">
+            {{-- Nội dung chính của từng trang bệnh nhân sẽ được render ở đây --}}
+            @yield('content')
+        </div>
     </div>
-</nav>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
