@@ -58,7 +58,7 @@ Route::middleware(['auth', 'isPatient'])->prefix('patient')->group(function () {
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
 
-    // ✅ Sửa tên route tại đây
+ 
     Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('patient.appointments.cancel');
 });
 
@@ -73,13 +73,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
-
-    // ✅ Dùng DoctorAppointmentController cho xác nhận & hủy lịch hẹn (đã có thông báo)
     Route::post('/appointments/{appointment}/confirm', [DoctorAppointmentController::class, 'confirm'])->name('appointments.confirm');
     Route::post('/appointments/{appointment}/cancel', [DoctorAppointmentController::class, 'cancel'])->name('appointments.cancel');
 
     Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
+    Route::post('/appointments/{appointment}/update-room', [DoctorController::class, 'updateRoom'])->name('appointments.updateRoom');
     Route::get('/history', [DoctorController::class, 'history'])->name('doctor.historyapp');
 });
 

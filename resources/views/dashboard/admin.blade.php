@@ -74,16 +74,6 @@
                     Tổng số bệnh nhân: <span class="text-success">{{ $totalPatients }}</span>
                 </p>
             </div>
-            <div class="col-md-4">
-                <select name="specialty_id" class="form-select">
-                    <option value="">Tất cả chuyên khoa</option>
-                    @foreach($allSpecialties as $item)
-                        <option value="{{ $item->id }}" {{ request('specialty_id') == $item->id ? 'selected' : '' }}>
-                            {{ $item->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
 
             <!-- Danh sách bác sĩ -->
             @foreach($allSpecialties as $specialty)

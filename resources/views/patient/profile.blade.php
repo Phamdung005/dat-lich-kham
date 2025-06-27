@@ -8,10 +8,12 @@
         ->where('is_read', false)
         ->count();
 @endphp
+<nav class="navbar navbar-light bg-light px-4 shadow-sm">
+    <a class="navbar-brand fw-bold text-primary">Phòng Khám Sức Khỏe Minh Dũng</a>
+</nav>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-2 sidebar bg-white border-end py-4">
             <h5 class="fw-bold mb-4 text-center text-primary">Bệnh Nhân</h5>
             <ul class="nav flex-column">
@@ -47,7 +49,6 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
         <div class="col-md-10 content-wrapper p-4">
             <h2 class="mb-4 text-center">Hồ sơ cá nhân</h2>
 
@@ -61,24 +62,15 @@
                 Thay đổi thông tin
             </button>
 
-            <div class="collapse" id="editForm">
-                <form action="{{ route('patient.profile.update') }}" method="POST" novalidate>
-                    @csrf
-                    @method('PUT')
+    <div class="collapse" id="editForm">
+        <form action="{{ route('patient.profile.update') }}" method="POST">
+            @csrf
+            @method('PUT')
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Họ tên mới</label>
-                        <input
-                            type="text"
-                            class="form-control @error('name') is-invalid @enderror"
-                            id="name"
-                            name="name"
-                            value="{{ old('name', $user->name) }}"
-                            required>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Họ tên mới</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}" required>
+            </div>
 
                     <hr>
                     <h5 class="text-muted">Đổi mật khẩu</h5>

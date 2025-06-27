@@ -141,31 +141,28 @@ class AppointmentController extends Controller
     }
 
     public function cancel(Appointment $appointment)
-{
-    // 👇 Thêm dòng này để kiểm tra ID
-    //dd($appointment->patient_id, auth()->id());
+    {
 
-    if ($appointment->patient_id !== auth()->id()) {
-        abort(403);
+        if ($appointment->patient_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if ($appointment->status === 'cancelled') {
+            return back()->with('error', 'Lịch hẹn đã bị hủy trước đó.');
+        }
+
+        $appointment->update([
+            'status' => 'cancelled'
+        ]);
+
+        \App\Models\Notification::create([
+            'user_id' => auth()->id(),
+            'title' => 'Hủy lịch hẹn',
+            'message' => 'Bạn đã hủy lịch hẹn với bác sĩ ' . $appointment->doctor->name . ' vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y'),
+        ]);
+
+        return redirect()->route('appointments.index')->with('success', 'Lịch hẹn đã được hủy.');
     }
-
-    if ($appointment->status === 'cancelled') {
-        return back()->with('error', 'Lịch hẹn đã bị hủy trước đó.');
-    }
-
-    $appointment->update([
-        'status' => 'cancelled'
-    ]);
-
-    // ✅ Tạo thông báo khi hủy lịch
-    \App\Models\Notification::create([
-        'user_id' => auth()->id(),
-        'title' => 'Hủy lịch hẹn',
-        'message' => 'Bạn đã hủy lịch hẹn với bác sĩ ' . $appointment->doctor->name . ' vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y'),
-    ]);
-
-    return redirect()->route('appointments.index')->with('success', 'Lịch hẹn đã được hủy.');
-}
 
 
 

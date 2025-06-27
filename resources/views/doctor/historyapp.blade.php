@@ -26,7 +26,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
     <a class="navbar-brand fw-bold text-primary">Phòng Khám Sức Khỏe Minh Dũng</a>
 </nav>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2 sidebar text-center text-white bg-light">

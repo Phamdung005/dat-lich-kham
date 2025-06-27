@@ -89,6 +89,7 @@
                             <th>Bệnh nhân</th>
                             <th>Ngày khám</th>
                             <th>Thời gian khám</th>
+                            <th>Số phòng</th>
                             <th>Ghi chú</th>
                             <th>Trạng thái</th>
                             <th>Hành động</th>
@@ -103,6 +104,14 @@
                             @endphp
                             <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('d/m/Y') }}</td>
                             <td>{{ $slotDisplayMap[$startTime] ?? $startTime }}</td>
+                            <td>
+                                <form action="{{ route('appointments.updateRoom', $appointment) }}" method="POST" class="d-flex">
+                                    @csrf
+                                    <input type="text" name="room_number" class="form-control form-control-sm me-2"
+                                        value="{{ $appointment->room_number }}" placeholder="Số phòng" style="width: 100px;">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Lưu</button>
+                                </form>
+                            </td>
                             <td>{{ $appointment->notes }}</td>
                             <td>
                                 @if($appointment->status == 'pending')

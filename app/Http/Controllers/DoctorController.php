@@ -40,8 +40,6 @@ class DoctorController extends Controller
             'completedCount'
         ));
     }
-
-
     public function confirm(Appointment $appointment)
     {
         $doctor = auth()->user()->doctor;
@@ -158,5 +156,22 @@ class DoctorController extends Controller
         ];
         $user = auth()->user();
         return view('doctor.historyapp', compact('appointments', 'slotDisplayMap', 'user'));
+    }
+
+    public function updateRoom(Request $request, Appointment $appointment)
+    {
+        $doctor = auth()->user()->doctor;
+        if (!$doctor || $appointment->doctor_id !== $doctor->id) {
+            abort(403);
+        }
+
+        $request->validate([
+            'room_number' => 'required|string|max:10',
+        ]);
+
+        $appointment->room_number = $request->input('room_number');
+        $appointment->save();
+
+        return redirect()->back()->with('success', 'Cập nhật phòng thành công.');
     }
 }
