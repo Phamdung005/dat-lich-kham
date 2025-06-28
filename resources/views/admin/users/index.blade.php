@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Sửa Thông Tin Bác Sĩ</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title>Quản lý Người dùng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/9db1097153.js" crossorigin="anonymous"></script>
     <style>
         body {
@@ -45,7 +45,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link" href="{{ route('users.index') }}">
+                        <a class="nav-link active" href="{{ route('users.index') }}">
                             <i class="fa-solid fa-users me-1"></i> Quản lý người dùng
                         </a>
                     </li>
@@ -61,48 +61,50 @@
             </div>
 
             <div class="col-md-10 p-4">
-                <h3 class="mb-4 text-primary">Chỉnh sửa Thông Tin Bác Sĩ</h3>
+                <h3 class="mb-4 text-primary">Quản lý Người dùng</h3>
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                @if(session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
-                <form action="{{ route('admin.doctor.update', $doctor->id) }}" method="POST" style="max-width: 600px;">
-                    @csrf
-                    @method('PUT')
+                <a href="{{ route('users.create') }}" class="btn btn-success mb-3">+ Thêm Người dùng</a>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Họ tên</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $doctor->name) }}" required>
-                    </div>
+                <table class="table table-bordered table-hover bg-white shadow-sm">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($users as $user)
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td class="text-capitalize">{{ $user->role }}</td>
+                            <td>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary me-1">Sửa</a>
+                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Xóa người dùng này?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Không có người dùng nào.</td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Địa chỉ Email</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $doctor->email) }}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="specialty_id" class="form-label">Chuyên khoa</label>
-                        <select id="specialty_id" name="specialty_id" class="form-select" required>
-                            @foreach($specialties as $specialty)
-                                <option value="{{ $specialty->id }}" {{ $doctor->specialty_id == $specialty->id ? 'selected' : '' }}>
-                                    {{ $specialty->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Quay lại</a>
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                    </div>
-                </form>
+                {{ $users->links() }} {{-- Phân trang --}}
             </div>
         </div>
     </div>

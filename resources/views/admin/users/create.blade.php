@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Sửa Thông Tin Bác Sĩ</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title>Thêm Người dùng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/9db1097153.js" crossorigin="anonymous"></script>
     <style>
-        body {
-            background-color: #f4f8fb;
-        }
+        body { background-color: #f4f8fb; }
         .sidebar {
             min-height: 100vh;
             background-color: #ffffff;
@@ -45,7 +43,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link" href="{{ route('users.index') }}">
+                        <a class="nav-link active" href="{{ route('users.index') }}">
                             <i class="fa-solid fa-users me-1"></i> Quản lý người dùng
                         </a>
                     </li>
@@ -61,7 +59,7 @@
             </div>
 
             <div class="col-md-10 p-4">
-                <h3 class="mb-4 text-primary">Chỉnh sửa Thông Tin Bác Sĩ</h3>
+                <h3 class="mb-4 text-primary">Thêm Người dùng</h3>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -73,35 +71,41 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.doctor.update', $doctor->id) }}" method="POST" style="max-width: 600px;">
+                <form action="{{ route('users.store') }}" method="POST" class="w-75">
                     @csrf
-                    @method('PUT')
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Họ tên</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $doctor->name) }}" required>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">Địa chỉ Email</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $doctor->email) }}" required>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="specialty_id" class="form-label">Chuyên khoa</label>
-                        <select id="specialty_id" name="specialty_id" class="form-select" required>
-                            @foreach($specialties as $specialty)
-                                <option value="{{ $specialty->id }}" {{ $doctor->specialty_id == $specialty->id ? 'selected' : '' }}>
-                                    {{ $specialty->name }}
-                                </option>
-                            @endforeach
+                        <label for="role" class="form-label">Vai trò</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="">-- Chọn vai trò --</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="doctor" {{ old('role') == 'doctor' ? 'selected' : '' }}>Bác sĩ</option>
+                            <option value="patient" {{ old('role') == 'patient' ? 'selected' : '' }}>Bệnh nhân</option>
                         </select>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Quay lại</a>
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm người dùng</button>
+                    <a href="{{ route('users.index') }}" class="btn btn-secondary ms-2">Hủy</a>
                 </form>
             </div>
         </div>

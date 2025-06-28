@@ -13,6 +13,8 @@ use App\Http\Controllers\Patient\PatientDashboardController;
 use App\Http\Controllers\Admin\AdminDoctorController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DoctorAppointmentController;
+use App\Http\Controllers\Admin\AdminRoomController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 // ---------------------- Auth routes ----------------------
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -96,6 +98,7 @@ Route::get('/specialty/{id}/doctors', [PatientController::class, 'viewDoctors'])
 // ---------------------- Admin routes ----------------------
 Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
     Route::get('dashboard', [AdminDoctorController::class, 'index'])->name('admin.dashboard');
+    Route::resource('users', AdminUserController::class);
 
     Route::put('doctors/{id}', [AdminDoctorController::class, 'update'])->name('admin.doctor.update');
     Route::delete('doctors/{id}', [AdminDoctorController::class, 'destroy'])->name('admin.doctor.delete');
@@ -103,4 +106,13 @@ Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
     Route::get('doctors/create', [AdminDoctorController::class, 'create'])->name('admin.doctors.create');
     Route::post('doctors', [AdminDoctorController::class, 'store'])->name('admin.doctors.store');
     Route::get('doctors/{id}/edit', [AdminDoctorController::class, 'edit'])->name('admin.doctors.edit');
+
+    Route::get('/rooms', [AdminRoomController::class, 'index'])->name('admin.rooms.index');
+    Route::get('/rooms/create', [AdminRoomController::class, 'create'])->name('admin.rooms.create');
+    Route::post('/rooms', [AdminRoomController::class, 'store'])->name('admin.rooms.store');
+    Route::get('/rooms/{room}/edit', [AdminRoomController::class, 'edit'])->name('admin.rooms.edit');
+    Route::put('/rooms/{room}', [AdminRoomController::class, 'update'])->name('admin.rooms.update');
+    Route::delete('/rooms/{room}', [AdminRoomController::class, 'destroy'])->name('admin.rooms.destroy');
 });
+Route::get('/admin/statistics', [AdminController::class, 'statistics'])->name('admin.statistics')->middleware(['auth', 'can:isAdmin']);
+

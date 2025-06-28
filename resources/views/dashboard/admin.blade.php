@@ -26,12 +26,26 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h5 class="fw-bold mb-4 text-center text-primary">Admin</h5>
             <ul class="nav flex-column text-start">
                 <li class="nav-item mb-2">
+                    <a class="nav-link" href="{{ route('admin.statistics') }}">
+                        <i class="fa-solid fa-chart-line me-1"></i> Thống kê
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
                     <a class="nav-link active" href="{{ route('admin.dashboard') }}"><i class="fa-solid fa-user-doctor me-1"></i> Quản lý bác sĩ</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link active" href="{{ route('admin.rooms.index') }}">
+                        <i class="fa-solid fa-door-open me-1"></i> Quản lý phòng
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link active" href="{{ route('users.index') }}">
+                        <i class="fa-solid fa-users me-1"></i> Quản lý người dùng
+                    </a>
                 </li>
                 <li class="nav-item mb-2">
                     <form method="POST" action="{{ route('logout') }}">
@@ -41,12 +55,9 @@
                 </li>
             </ul>
         </div>
-
-        <!-- Main Content -->
         <div class="col-md-10 p-4">
             <h3 class="mb-4 text-primary">Quản lý Bác sĩ</h3>
 
-            <!-- Form tìm kiếm -->
             <form method="GET" action="{{ route('admin.dashboard') }}" class="row g-3 mb-4">
                 <div class="col-md-5">
                     <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control" placeholder="Tìm theo tên bác sĩ">
@@ -66,16 +77,6 @@
                     <a href="{{ route('admin.doctors.create') }}" class="btn btn-success w-100">+ Thêm Bác sĩ</a>
                 </div>
             </form>
-
-            <!-- Tổng số bác sĩ, bệnh nhân -->
-            <div class="mb-4">
-                <p class="fw-semibold text-muted">
-                    Tổng số bác sĩ: <span class="text-primary">{{ $totalDoctors }}</span> |
-                    Tổng số bệnh nhân: <span class="text-success">{{ $totalPatients }}</span>
-                </p>
-            </div>
-
-            <!-- Danh sách bác sĩ -->
             @foreach($allSpecialties as $specialty)
                 @php
                     $filteredDoctors = $doctors->where('specialty_id', $specialty->id);
