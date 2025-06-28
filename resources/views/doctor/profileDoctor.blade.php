@@ -63,6 +63,9 @@
                         <a class="nav-link active" href="{{ route('doctor.historyapp') }}"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử cuộc hẹn</a>
                     </li>
                     <li class="nav-item mb-2">
+                        <a class="nav-link active" href="{{ route('doctor.notificationdr') }}"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                    </li>
+                    <li class="nav-item mb-2">
                         <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                     </li>
                     <li class="nav-item mb-2">

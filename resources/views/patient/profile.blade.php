@@ -28,8 +28,13 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link {{ request()->routeIs('appointments.index') ? 'active' : '' }}" href="{{ route('appointments.index') }}">
+                    <a class="nav-link {{ request()->routeIs('patient.appointments') ? 'active' : '' }}" href="{{ route('patient.appointments') }}">
                         📅 Lịch hẹn đã đặt
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('patient.appointments.history') ? 'active' : '' }}" href="{{ route('patient.appointments.history') }}">
+                        📜 Lịch sử khám bệnh
                     </a>
                 </li>
                 <li class="nav-item mb-2 position-relative">

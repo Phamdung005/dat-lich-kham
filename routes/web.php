@@ -45,22 +45,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/api/available-times', [AppointmentController::class, 'getAvailableTimes'])->name('appointments.available-times');
 });
 
-// ---------------------- Patient routes ----------------------
-Route::middleware(['auth'])->group(function () {
-    Route::get('/patient/profile', [ProfileController::class, 'show'])->name('patient.profile.show');
-    Route::put('/patient/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
-    Route::get('/patient/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments');
-});
-
-// ✅ Các route dành riêng cho bệnh nhân (hủy/sửa lịch + xem thông báo)
 Route::middleware(['auth', 'isPatient'])->prefix('patient')->group(function () {
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('patient.notifications');
+    Route::get('/dashboard', [PatientDashboardController::class, 'index'])->name('patient.dashboard');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('patient.profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('patient.profile.update');
+
+    Route::get('/appointments', [PatientController::class, 'indexAppointments'])->name('patient.appointments');
+    Route::get('/appointments/history', [PatientController::class, 'historyapps'])->name('patient.appointments.history');
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
-
- 
     Route::post('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('patient.appointments.cancel');
+    Route::delete('/appointments/history/{id}', [PatientController::class, 'deleteHistory'])->name('patient.appointments.history.delete');
+    Route::delete('/appointments/history', [PatientController::class, 'deleteAllHistory'])->name('patient.appointments.history.deleteAll');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('patient.notifications');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('patient.notifications.delete');
+    Route::delete('/notifications', [NotificationController::class, 'destroyAll'])->name('patient.notifications.deleteAll');
 });
+
 
 
 // ---------------------- Doctor routes ----------------------
@@ -69,19 +71,23 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/doctor/profile', [DoctorController::class, 'updateProfile'])->name('doctor.profileDoctor.update');
 });
 
-
-
-Route::middleware(['auth'])->prefix('doctor')->group(function () {
+Route::middleware(['auth', 'isDoctor'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
     Route::post('/appointments/{appointment}/confirm', [DoctorAppointmentController::class, 'confirm'])->name('appointments.confirm');
     Route::post('/appointments/{appointment}/cancel', [DoctorAppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('/appointments/{appointment}/assign-room', [DoctorController::class, 'assignRoom'])->name('appointments.assignRoom');
 
     Route::get('/appointments', [DoctorController::class, 'appointmentDr'])->name('doctor.appointmentdr');
     Route::post('/appointments/{appointment}/complete', [DoctorController::class, 'complete'])->name('appointments.complete');
     Route::post('/appointments/{appointment}/update-room', [DoctorController::class, 'updateRoom'])->name('appointments.updateRoom');
     Route::get('/history', [DoctorController::class, 'history'])->name('doctor.historyapp');
-});
+    Route::delete('/history/{id}', [DoctorController::class, 'deleteDoctorHistory'])->name(('doctor.history.delete'));
+    Route::delete('/history', [DoctorController::class, 'deleteAllDoctorHistory'])->name('doctor.history.deleteAll');
 
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'doctorNotifications'])->name('doctor.notificationdr');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'deleteDoctorNotification'])->name('doctor.notifications.delete');
+    Route::delete('/notifications', [NotificationController::class, 'deleteAllDoctorNotifications'])->name('doctor.notifications.deleteAll');
+});
 
 
 // ---------------------- Public specialty route ----------------------

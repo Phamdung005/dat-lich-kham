@@ -62,6 +62,9 @@
                     <a class="nav-link active" href="{{ route('doctor.historyapp') }}"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử cuộc hẹn</a>
                 </li>
                 <li class="nav-item mb-2">
+                    <a class="nav-link active" href=" {{ route('doctor.notificationdr') }}"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                </li>
+                <li class="nav-item mb-2">
                     <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
@@ -82,6 +85,11 @@
             @if($appointments->isEmpty())
                 <p>Hiện tại bạn chưa có lịch hẹn nào.</p>
             @else
+                <form action="{{ route('doctor.history.deleteAll') }}" method="POST" class="mb-3" onsubmit="return confirm('Xác nhận xoá toàn bộ lịch sử?')">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Xoá toàn bộ lịch sử</button>
+                </form>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -130,9 +138,14 @@
                                         <button type="submit" class="btn btn-sm btn-primary">Đã khám xong</button>
                                     </form>
                                 @else
-                                    <span class="text-muted">Không khả dụng</span>
+                                    <form action="{{ route('doctor.history.delete', $appointment->id) }}" method="POST" onsubmit="return confirm('Xác nhận xoá cuộc hẹn này?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Xoá</button>
+                                    </form>
                                 @endif
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>

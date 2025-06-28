@@ -37,7 +37,8 @@ class AppointmentController extends Controller
             return back()->withErrors(['appointment_time' => 'Giờ này đã được đặt.'])->withInput();
         }
 
-        // Tạo lịch hẹn
+        $doctor = \App\Models\Doctor::with('user')->findOrFail($request->doctor_id);
+
         $appointment = Appointment::create([
             'patient_id' => auth()->id(),
             'doctor_id' => $request->doctor_id,
@@ -45,13 +46,22 @@ class AppointmentController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // Tạo thông báo cho bệnh nhân
-        $doctor = Doctor::findOrFail($request->doctor_id);
         Notification::create([
             'user_id' => auth()->id(),
+            'user_type' => 'patient',
             'title' => 'Đặt lịch khám thành công',
             'message' => 'Bạn đã đặt lịch với bác sĩ ' . $doctor->name . ' vào lúc ' . Carbon::parse($datetime)->format('H:i d/m/Y'),
         ]);
+
+
+        if ($doctor->user && $doctor->user->id) {
+            Notification::create([
+                'user_id' => $doctor->user->id,
+                'user_type' => 'doctor',
+                'title' => 'Bạn có lịch hẹn mới',
+                'message' => 'Có bệnh nhân đặt lịch với bạn vào lúc ' . Carbon::parse($datetime)->format('H:i d/m/Y'),
+            ]);
+        }
 
         return redirect()->route('appointments.index')->with('success', 'Đặt lịch thành công!');
     }
@@ -157,13 +167,22 @@ class AppointmentController extends Controller
 
         \App\Models\Notification::create([
             'user_id' => auth()->id(),
+            'user_type' => 'patient',
             'title' => 'Hủy lịch hẹn',
             'message' => 'Bạn đã hủy lịch hẹn với bác sĩ ' . $appointment->doctor->name . ' vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y'),
         ]);
 
+        if ($appointment->doctor && $appointment->doctor->user) {
+            \App\Models\Notification::create([
+                'user_id' => $appointment->doctor->user->id,
+                'user_type' => 'doctor',
+                'title' => 'Lịch hẹn bị hủy',
+                'message' => 'Bệnh nhân đã hủy lịch hẹn với bạn vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y'),
+            ]);
+        }
+
         return redirect()->route('appointments.index')->with('success', 'Lịch hẹn đã được hủy.');
     }
-
 
 
     public function getAvailableTimes(Request $request)

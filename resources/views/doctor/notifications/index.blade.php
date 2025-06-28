@@ -76,49 +76,40 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-10 p-4">
-            <h2 class="mb-4">Thống kê lịch hẹn</h2>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card text-white bg-secondary mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Tất cả</h5>
-                            <p class="card-text fs-4">{{ $totalAppointments }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-warning mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Chờ xác nhận</h5>
-                            <p class="card-text fs-4">{{ $pendingCount }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-success mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Đã xác nhận</h5>
-                            <p class="card-text fs-4">{{ $confirmedCount }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-danger mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Đã hủy</h5>
-                            <p class="card-text fs-4">{{ $cancelledCount }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Đã hoàn thành</h5>
-                            <p class="card-text fs-4">{{ $completedCount }}</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-md-10 content-wrapper">
+            <div class="container mt-4">
+                <h3 class="mb-4 text-primary">🔔 Thông báo của bạn</h3>
+                
+                @if ($notifications->isEmpty())
+                    <div class="alert alert-info">Bạn chưa có thông báo nào.</div>
+                @else
+                    <form action="{{ route('doctor.notifications.deleteAll') }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn xoá tất cả thông báo?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Xoá tất cả</button>
+                    </form>
+                    <ul class="list-group shawdow-sm">
+                        @foreach ($notifications as $notification)
+                            <li class="list-group-item d-flex justify-content-between align-items-start {{ $notification->is_read ? '' : 'bg-light' }}">
+                                <div class="me-auto">
+                                    <strong class="fw-bold">{{ $notification->title }}</strong>
+                                    <p class="mb-1">{{ $notification->message }}</p>
+                                    <small class="text-muted">{{ $notification->created_at->format('H:i d/m/Y') }}</small>
+                                </div>
+                                <div class="text-end">
+                                    @if(!$notification->is_read)
+                                        <span class="badge bg-success mb-2">Mới</span>
+                                    @endif
+                                    <form method="POST" action="{{ route('patient.notifications.delete', $notification->id) }}" onsubmit="return confirm('Xóa thông báo này?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-outline-danger btn-sm">Xóa</button>
+                                    </form>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>
@@ -127,3 +118,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

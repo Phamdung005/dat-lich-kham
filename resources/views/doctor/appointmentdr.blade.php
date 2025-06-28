@@ -63,6 +63,9 @@
                     <a class="nav-link active" href="{{ route('doctor.historyapp') }}"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử cuộc hẹn</a>
                 </li>
                 <li class="nav-item mb-2">
+                    <a class="nav-link active" href=" {{ route('doctor.notificationdr') }}"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                </li>
+                <li class="nav-item mb-2">
                     <a class="nav-link" href="{{ route('doctor.profileDoctor.show') }}"><i class="fa-solid fa-user"></i> Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
@@ -105,11 +108,31 @@
                             <td>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('d/m/Y') }}</td>
                             <td>{{ $slotDisplayMap[$startTime] ?? $startTime }}</td>
                             <td>
-                                <form action="{{ route('appointments.updateRoom', $appointment) }}" method="POST" class="d-flex">
+                                <form method="POST" action="{{ route('appointments.assignRoom', $appointment) }}">
                                     @csrf
-                                    <input type="text" name="room_number" class="form-control form-control-sm me-2"
-                                        value="{{ $appointment->room_number }}" placeholder="Số phòng" style="width: 100px;">
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">Lưu</button>
+                                    <select name="room_number" class="form-select" onchange="this.form.submit()">
+                                        <option value="">Chọn phòng</option>
+                                            @foreach($rooms as $room)
+                                                @php
+                                                    $roomIsTaken = $appointments->contains(function ($a) use ($appointment, $room) {
+                                                        return $a->id !== $appointment->id &&
+                                                            $a->room_number === $room->room_number &&
+                                                            \Carbon\Carbon::parse($a->appointment_time)->toDateString() === \Carbon\Carbon::parse($appointment->appointment_time)->toDateString() &&
+                                                            \Carbon\Carbon::parse($a->appointment_time)->format('H:i') === \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i') &&
+                                                            in_array($a->status, ['pending', 'confirmed']);
+                                                    });
+                                                @endphp
+
+                                                <option value="{{ $room->room_number }}"
+                                                    @if($appointment->room_number === $room->room_number) selected @endif
+                                                    @if($roomIsTaken && $appointment->room_number !== $room->room_number) disabled @endif>
+                                                    {{ $room->room_number }}
+                                                    @if($roomIsTaken && $appointment->room_number !== $room->room_number)
+                                                        (Đã được đặt)
+                                                    @endif
+                                                </option>
+                                            @endforeach
+                                    </select>
                                 </form>
                             </td>
                             <td>{{ $appointment->notes }}</td>

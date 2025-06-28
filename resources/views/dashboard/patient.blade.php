@@ -38,14 +38,12 @@
 </head>
 <body>
 
-<!-- Navbar thương hiệu -->
 <nav class="navbar navbar-light bg-light px-4 shadow-sm">
     <a class="navbar-brand fw-bold text-primary">Phòng Khám Sức Khỏe Minh Dũng</a>
 </nav>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h5 class="fw-bold mb-4 text-center text-primary">Bệnh Nhân</h5>
             <ul class="nav flex-column">
@@ -60,8 +58,13 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link {{ request()->routeIs('appointments.index') ? 'active' : '' }}" href="{{ route('appointments.index') }}">
+                    <a class="nav-link {{ request()->routeIs('patient.appointments') ? 'active' : '' }}" href="{{ route('patient.appointments') }}">
                         📅 Lịch hẹn đã đặt
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('patient.appointments.history') ? 'active' : '' }}" href="{{ route('patient.appointments.history') }}">
+                        📜 Lịch sử khám bệnh
                     </a>
                 </li>
                 <li class="nav-item mb-2 position-relative">
@@ -85,7 +88,6 @@
             </ul>
         </div>
 
-        <!-- Nội dung chính -->
         <div class="col-md-10 content-wrapper">
             <h2 class="text-center mb-4">Chào mừng {{ $user->name }} đến với hệ thống đặt lịch khám</h2>
             <p class="text-center text-muted mb-5">Đặt lịch nhanh chóng, dễ dàng, theo dõi lịch sử khám bệnh tiện lợi</p>

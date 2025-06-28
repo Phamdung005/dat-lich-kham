@@ -55,7 +55,12 @@
                     <a class="nav-link" href="{{ route('patient.profile.show') }}">👤 Hồ sơ cá nhân</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a class="nav-link active" href="{{ route('appointments.index') }}">📅 Lịch hẹn đã đặt</a>
+                    <a class="nav-link active" href="{{ route('patient.appointments') }}">📅 Lịch hẹn đã đặt</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link {{ request()->routeIs('patient.appointments.history') ? 'active' : '' }}" href="{{ route('patient.appointments.history') }}">
+                        📜 Lịch sử khám bệnh
+                    </a>
                 </li>
                 <li class="nav-item mb-2 position-relative">
                     <a class="nav-link" href="{{ route('patient.notifications') }}">
