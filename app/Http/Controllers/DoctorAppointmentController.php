@@ -44,7 +44,7 @@ class DoctorAppointmentController extends Controller
     }
 
 
-    public function cancel(Appointment $appointment)
+    public function cancel(Request $request, Appointment $appointment)
     {
         $doctor = auth()->user()->doctor;
 
@@ -56,14 +56,22 @@ class DoctorAppointmentController extends Controller
             return back()->with('error', 'Không thể hủy lịch hẹn này.');
         }
 
-        $appointment->update(['status' => 'cancelled']);
+        $request->validate([
+            'cancel_reason' => 'required|string|max:255',
+        ]);
+
+        $appointment->update([
+            'status' => 'cancelled',
+            'cancel_reason' => $request->cancel_reason,
+        ]);
 
         Notification::create([
             'user_id' => $appointment->patient_id,
             'user_type' => 'patient',
             'title' => 'Lịch hẹn bị hủy',
             'message' => 'Lịch hẹn với bác sĩ ' . $appointment->doctor->name .
-            ' vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y') . ' đã bị từ chối.',
+                ' vào lúc ' . \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i d/m/Y') .
+                ' đã bị hủy. Lý do: ' . $request->cancel_reason,
         ]);
 
         if($appointment->doctor && $appointment->doctor->user) {

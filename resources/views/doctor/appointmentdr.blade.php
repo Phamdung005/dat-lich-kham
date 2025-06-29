@@ -153,10 +153,32 @@
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-success">Xác nhận</button>
                                     </form>
-                                    <form action="{{ route('appointments.cancel', $appointment) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-danger">Hủy</button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $appointment->id }}">
+                                        Hủy
+                                    </button>
+                                    <div class="modal fade" id="cancelModal{{ $appointment->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $appointment->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('appointments.cancel', $appointment) }}" method="POST">
+                                                @csrf
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="cancelModalLabel{{ $appointment->id }}">Lý do hủy lịch</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="cancel_reason_{{ $appointment->id }}" class="form-label">Nhập lý do hủy:</label>
+                                                            <textarea class="form-control" id="cancel_reason_{{ $appointment->id }}" name="cancel_reason" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 @elseif($appointment->status == 'confirmed')
                                     <form action="{{ route('appointments.complete', $appointment) }}" method="POST" style="display:inline;">
                                         @csrf

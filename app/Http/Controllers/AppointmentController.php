@@ -68,6 +68,7 @@ class AppointmentController extends Controller
 
     public function index() {
         $appointments = Appointment::where('patient_id', auth()->id())
+                        ->whereIn('status', ['pending', 'confirmed'])
                         ->with('doctor.specialty')
                         ->orderBy('appointment_time', 'desc')
                         ->get();
