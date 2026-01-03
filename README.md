@@ -7,6 +7,81 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Giới thiệu dự án — Đặt lịch khám (Chi tiết) 🏥
+
+**Mục tiêu:** Ứng dụng giúp bệnh nhân dễ dàng đặt lịch khám, cho phép Admin và Bác sĩ quản lý lịch, giảm thời gian chờ và lưu trữ lịch sử khám.
+
+---
+
+### 🔍 Tính năng chính
+
+- Hệ thống đa vai trò: **Admin**, **Doctor**, **Patient**.
+- Đặt lịch, xác nhận, hủy (với `cancel_reason`) và theo dõi trạng thái lịch (ví dụ: pending, confirmed, cancelled, completed).
+- Quản lý **Bác sĩ**, **Chuyên khoa**, **Phòng khám (Room)** và số phòng (`room_number`).
+- Hệ thống **Notification** với `title` và phân loại theo loại người dùng.
+- Hỗ trợ upload **avatar** và lưu **phone** cho người dùng.
+- Seeder để khởi tạo dữ liệu mẫu (users, doctors, rooms, ...).
+
+---
+
+### 🧭 Luồng chính (use-cases)
+
+1. Bệnh nhân chọn chuyên khoa → chọn bác sĩ → chọn ngày/giờ và phòng → gửi yêu cầu đặt lịch.
+2. Bác sĩ/Admin xác nhận hoặc từ chối; người dùng nhận thông báo.
+3. Bệnh nhân có thể hủy lịch và ghi `cancel_reason`.
+4. Admin quản lý dữ liệu (thêm/sửa/xóa bác sĩ, phòng, chuyên khoa).
+
+---
+
+### 📦 Mô hình dữ liệu (tóm tắt)
+
+- **User** (role, name, email, phone, avatar, password)
+- **Doctor** (user_id, specialty_id, thông tin khác)
+- **Specialty** (name, description)
+- **Room** (room_number, ...)
+- **Appointment** (user_id, doctor_id, room_id, scheduled_at, status, cancel_reason)
+- **Notification** (user_id, title, body?, user_type)
+
+---
+
+### 🛠️ Công nghệ & Thành phần
+
+- Backend: **Laravel 12**, PHP 8.2
+- Frontend: Blade + **Vite**, **Tailwind CSS**, **Axios**
+- Queue: Laravel queue (dùng cho gửi thông báo/async jobs)
+- DB: MySQL / PostgreSQL / SQLite
+- Testing: PHPUnit / Laravel Test Suite
+
+---
+
+### ⚙️ Vận hành & Triển khai (tóm tắt)
+
+- Thiết lập `.env` (DB, MAIL, QUEUE)
+- Chạy migrations & seeder: `php artisan migrate --seed`
+- Chạy queue worker: `php artisan queue:work`
+- Xây assets: `npm install && npm run build`
+- Dùng `composer run-script dev` để chạy server + queue + vite trong dev
+
+> Lưu ý: Cấu hình mail/queue cần thiết để gửi thông báo thực tế.
+
+---
+
+### 🚀 Roadmap / Hướng mở rộng (gợi ý)
+
+- Lịch calendar cho từng bác sĩ
+- API cho mobile app
+- Xác thực OAuth / Social login
+- Báo cáo thống kê (số lịch theo ngày/chuyên khoa, tỉ lệ hủy)
+- Nhắc lịch tự động (SMS/Email)
+
+---
+
+### ✅ Gợi ý cho README
+
+- Thêm phần **Tài khoản demo** (nếu seed tạo user sẵn) — tôi có thể kiểm tra `database/seeders` và thêm vào.
+- Thêm `.env.example` mẫu với các biến DB, MAIL, QUEUE nếu cần.
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
